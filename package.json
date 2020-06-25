@@ -1,0 +1,19 @@
+{
+  "name": "semestral-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-be": "nodemon server/main.js",
+    "format:elm": "elm-format --yes ./src/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "elm-format": "^0.8.3",
+    "express": "^4.16.4",
+    "nodemon": "^1.19.0"
+  }
+}
