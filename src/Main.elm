@@ -1,12 +1,14 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, div, h1, img, text)
-import Html.Attributes exposing (src)
+import Html exposing (Html, div, h1, img, input, text)
+import Html.Attributes exposing (placeholder, src)
+import Html.Events exposing (onInput)
 import Http
 import Json.Decode as Decode
 import Json.Decode.Pipeline as Pipeline
 import RemoteData
+import Table
 
 
 
@@ -14,7 +16,10 @@ import RemoteData
 
 
 type alias Model =
-    RemoteData.WebData Response
+    { response : RemoteData.WebData Response
+    , tableState : Table.State
+    , query : String
+    }
 
 
 type alias Response =
@@ -38,7 +43,10 @@ dataEndpointUrl =
 
 init : ( Model, Cmd Msg )
 init =
-    ( RemoteData.Loading
+    ( { response = RemoteData.Loading
+      , tableState = Table.initialSort "Name"
+      , query = ""
+      }
     , getPlayers
     )
 
@@ -70,13 +78,27 @@ decodeDataResponse =
 
 type Msg
     = DataResponse (RemoteData.WebData Response)
+    | SetQuery String
+    | SetTableState Table.State
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         DataResponse webDataResponse ->
-            ( webDataResponse, Cmd.none )
+            ( {model | response = webDataResponse}
+            , Cmd.none
+            )
+
+        SetQuery newQuery ->
+            ( { model | query = newQuery }
+            , Cmd.none
+            )
+
+        SetTableState newState ->
+            ( { model | tableState = newState }
+            , Cmd.none
+            )
 
 
 
@@ -85,7 +107,7 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    case model of
+    case model.response of
         RemoteData.NotAsked ->
             text "Not asked to fetch data"
 
@@ -96,8 +118,50 @@ view model =
             text "Error"
 
         RemoteData.Success { players } ->
-            div [] <| List.map (\{ firstName } -> text firstName) players
+            let
+                lowerQuery =
+                    String.toLower model.query
 
+                acceptablePlayers =
+                    List.filter (String.contains lowerQuery << String.toLower << .webName) players
+            in
+            div []
+                [ h1 [] [ text "Fantasy Premier League Statistics" ]
+                , input [ placeholder "Search by Name", onInput SetQuery ] []
+                , Table.view config model.tableState acceptablePlayers
+                ]
+
+
+
+config : Table.Config Player Msg
+config =
+    Table.config
+        { toId = .webName
+        , toMsg = SetTableState
+        , columns =
+            [ Table.stringColumn "Name" .webName
+            , Table.intColumn "Transfers in" .transfersIn
+            , Table.intColumn "Transfers out" .transfersOut
+            ]
+        }
+
+teamColumn : String -> (data -> Int) -> Table.Column data msg
+teamColumn name teamId =
+    let
+        teamPic = "a.jpg"
+    in
+        Table.veryCustomColumn
+            { name = name
+            , viewData = \data -> viewTeam data
+            , sorter = Table.unsortable
+            }
+
+viewTeam : data -> Table.HtmlDetails msg
+viewTeam teamId =
+    Table.HtmlDetails []
+    [
+
+    ]
 
 
 ---- PROGRAM ----
