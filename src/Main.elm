@@ -24,6 +24,10 @@ type alias Response =
 type alias Player =
     { firstName : String
     , secondName : String
+    , webName : String
+    --, selectedBy: Float
+    , transfersIn: Int
+    , transfersOut: Int
     }
 
 
@@ -35,15 +39,23 @@ dataEndpointUrl =
 init : ( Model, Cmd Msg )
 init =
     ( RemoteData.Loading
-    , Http.get { url = dataEndpointUrl, expect = Http.expectJson (RemoteData.fromResult >> DataResponse) decodeDataResponse }
+    , getPlayers
     )
 
+getPlayers : Cmd Msg
+getPlayers = Http.get { url = dataEndpointUrl
+                      , expect = Http.expectJson (RemoteData.fromResult >> DataResponse) decodeDataResponse
+                      }
 
 decodePlayer : Decode.Decoder Player
 decodePlayer =
     Decode.succeed Player
         |> Pipeline.required "first_name" Decode.string
         |> Pipeline.required "second_name" Decode.string
+        |> Pipeline.required "web_name" Decode.string
+        --|> Pipeline.required "selected_by_percent" Decode.float
+        |> Pipeline.required "transfers_in_event" Decode.int
+        |> Pipeline.required "transfers_out_event" Decode.int
 
 
 decodeDataResponse : Decode.Decoder Response
