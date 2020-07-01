@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-be": "nodemon server/main.js",
+    "start": "nodemon server/main.js",
     "format:elm": "elm-format --yes ./src/"
   },
   "author": "",
