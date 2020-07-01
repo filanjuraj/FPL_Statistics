@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Html exposing (Html, div, h1, img, input, text)
-import Html.Attributes exposing (placeholder, src)
+import Html.Attributes exposing (height, placeholder, src, width)
 import Html.Events exposing (onInput)
 import Http
 import Json.Decode as Decode
@@ -27,8 +27,7 @@ type alias Response =
 
 
 type alias Player =
-    { firstName : String
-    , secondName : String
+    { team : Int
     , webName : String
     --, selectedBy: Float
     , transfersIn: Int
@@ -58,8 +57,7 @@ getPlayers = Http.get { url = dataEndpointUrl
 decodePlayer : Decode.Decoder Player
 decodePlayer =
     Decode.succeed Player
-        |> Pipeline.required "first_name" Decode.string
-        |> Pipeline.required "second_name" Decode.string
+        |> Pipeline.required "team" Decode.int
         |> Pipeline.required "web_name" Decode.string
         --|> Pipeline.required "selected_by_percent" Decode.float
         |> Pipeline.required "transfers_in_event" Decode.int
@@ -139,29 +137,30 @@ config =
         { toId = .webName
         , toMsg = SetTableState
         , columns =
-            [ Table.stringColumn "Name" .webName
+            [ teamColumn "Team" .team
+            , Table.stringColumn "Name" .webName
             , Table.intColumn "Transfers in" .transfersIn
             , Table.intColumn "Transfers out" .transfersOut
             ]
         }
 
 teamColumn : String -> (data -> Int) -> Table.Column data msg
-teamColumn name teamId =
-    let
-        teamPic = "a.jpg"
-    in
+teamColumn name toPic =
         Table.veryCustomColumn
             { name = name
-            , viewData = \data -> viewTeam data
-            , sorter = Table.unsortable
+            , viewData = \data -> viewTeam (toPic data)
+            , sorter = Table.increasingOrDecreasingBy toPic
             }
 
-viewTeam : data -> Table.HtmlDetails msg
-viewTeam teamId =
-    Table.HtmlDetails []
-    [
-
-    ]
+viewTeam : Int -> Table.HtmlDetails msg
+viewTeam data =
+    let
+        teamPic = "images/" ++ (String.fromInt data) ++ ".png"
+    in
+        Table.HtmlDetails []
+        [
+            img [src (teamPic)] []
+        ]
 
 
 ---- PROGRAM ----
