@@ -8,6 +8,7 @@ import Http
 import Json.Decode as Decode
 import Json.Decode.Pipeline as Pipeline
 import RemoteData
+import String.Normalize
 import Table
 
 
@@ -65,12 +66,12 @@ decodePlayer =
 
 stringFloatDecoder : Decode.Decoder Float
 stringFloatDecoder =
-  (Decode.string)
+  Decode.string
     |> Decode.andThen
         (\val ->
             case String.toFloat val of
               Just f -> Decode.succeed f
-              Nothing -> Decode.fail "not a float"
+              Nothing -> Decode.fail "Not a float!"
         )
 
 decodeDataResponse : Decode.Decoder Response
@@ -127,10 +128,10 @@ view model =
         RemoteData.Success { players } ->
             let
                 lowerQuery =
-                    String.toLower model.query
+                    String.Normalize.removeDiacritics <| String.toLower model.query
 
                 acceptablePlayers =
-                    List.filter (String.contains lowerQuery << String.toLower << .webName) players
+                    List.filter (String.contains lowerQuery << String.Normalize.removeDiacritics << String.toLower << .webName) players
             in
             div []
                 [ h1 [] [ text "Fantasy Premier League Statistics" ]
