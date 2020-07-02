@@ -29,7 +29,7 @@ type alias Response =
 type alias Player =
     { team : Int
     , webName : String
-    --, selectedBy: Float
+    , selectedBy: Float
     , transfersIn: Int
     , transfersOut: Int
     }
@@ -59,10 +59,19 @@ decodePlayer =
     Decode.succeed Player
         |> Pipeline.required "team" Decode.int
         |> Pipeline.required "web_name" Decode.string
-        --|> Pipeline.required "selected_by_percent" Decode.float
+        |> Pipeline.required "selected_by_percent" stringFloatDecoder
         |> Pipeline.required "transfers_in_event" Decode.int
         |> Pipeline.required "transfers_out_event" Decode.int
 
+stringFloatDecoder : Decode.Decoder Float
+stringFloatDecoder =
+  (Decode.string)
+    |> Decode.andThen
+        (\val ->
+            case String.toFloat val of
+              Just f -> Decode.succeed f
+              Nothing -> Decode.fail "not a float"
+        )
 
 decodeDataResponse : Decode.Decoder Response
 decodeDataResponse =
@@ -139,6 +148,7 @@ config =
         , columns =
             [ teamColumn "Team" .team
             , Table.stringColumn "Name" .webName
+            , Table.floatColumn "Selected by [%]" .selectedBy
             , Table.intColumn "Transfers in" .transfersIn
             , Table.intColumn "Transfers out" .transfersOut
             ]
