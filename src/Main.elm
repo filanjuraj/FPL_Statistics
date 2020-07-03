@@ -170,7 +170,7 @@ viewTeam data =
     in
         Table.HtmlDetails []
         [
-            img [src (teamPic)] []
+            img [src (teamPic), width 40, height 40] []
         ]
 
 
