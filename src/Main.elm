@@ -36,6 +36,7 @@ type alias Player =
     , selectedBy : Float
     , transfersIn : Int
     , transfersOut : Int
+    , position : String
     , reason : String
     , detail : String
     , return : String
@@ -51,6 +52,7 @@ type alias DecodedPlayer =
     , selectedBy : Float
     , transfersIn : Int
     , transfersOut : Int
+    , position : String
     }
 
 
@@ -109,6 +111,7 @@ decodePlayer =
         |> Pipeline.required "selected_by_percent" stringFloatDecoder
         |> Pipeline.required "transfers_in_event" Decode.int
         |> Pipeline.required "transfers_out_event" Decode.int
+        |> Pipeline.required "element_type" positionDecoder
 
 
 stringFloatDecoder : Decode.Decoder Float
@@ -122,6 +125,29 @@ stringFloatDecoder =
 
                     Nothing ->
                         Decode.fail "Not a float!"
+            )
+
+
+positionDecoder : Decode.Decoder String
+positionDecoder =
+    Decode.int
+        |> Decode.andThen
+            (\val ->
+                case val of
+                    1 ->
+                        Decode.succeed "GKP"
+
+                    2 ->
+                        Decode.succeed "DEF"
+
+                    3 ->
+                        Decode.succeed "MID"
+
+                    4 ->
+                        Decode.succeed "FWD"
+
+                    _ ->
+                        Decode.fail "What is this position?!"
             )
 
 
@@ -153,6 +179,7 @@ createPlayer nodes decodedPlayer =
             , selectedBy = decodedPlayer.selectedBy
             , transfersIn = decodedPlayer.transfersIn
             , transfersOut = decodedPlayer.transfersOut
+            , position = decodedPlayer.position
             , reason = reason
             , detail = detail
             , return = return
@@ -266,18 +293,17 @@ createPlayer nodes decodedPlayer =
                                                         |> List.tail
                                                         |> Maybe.withDefault []
                                                         |> List.filter
-                                                           (\node ->
-                                                               case node of
-                                                                   Element _ _ _ ->
-                                                                       True
+                                                            (\node ->
+                                                                case node of
+                                                                    Element _ _ _ ->
+                                                                        True
 
-                                                                   _ ->
-                                                                       False
-                                                           )
+                                                                    _ ->
+                                                                        False
+                                                            )
                                                         |> List.tail
                                                         |> Maybe.withDefault []
                                                         |> List.head
-
                                                         |> Maybe.map
                                                             (\node ->
                                                                 case node of
@@ -286,9 +312,11 @@ createPlayer nodes decodedPlayer =
                                                                             |> List.filter
                                                                                 (\node2 ->
                                                                                     case node2 of
-                                                                                        Text _ -> True
+                                                                                        Text _ ->
+                                                                                            True
 
-                                                                                        _ -> False
+                                                                                        _ ->
+                                                                                            False
                                                                                 )
                                                                             |> List.head
                                                                             |> Maybe.map
@@ -302,7 +330,8 @@ createPlayer nodes decodedPlayer =
                                                                                 )
                                                                             |> Maybe.withDefault ""
 
-                                                                    _ -> ""
+                                                                    _ ->
+                                                                        ""
                                                             )
                                                         |> Maybe.withDefault ""
 
@@ -311,20 +340,16 @@ createPlayer nodes decodedPlayer =
                                                         |> List.tail
                                                         |> Maybe.withDefault []
                                                         |> List.filter
-                                                           (\node ->
-                                                               case node of
-                                                                   Element _ _ _ ->
-                                                                       True
+                                                            (\node ->
+                                                                case node of
+                                                                    Element _ _ _ ->
+                                                                        True
 
-                                                                   _ ->
-                                                                       False
-                                                           )
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
+                                                                    _ ->
+                                                                        False
+                                                            )
+                                                        |> List.drop 2
                                                         |> List.head
-
                                                         |> Maybe.map
                                                             (\node ->
                                                                 case node of
@@ -333,9 +358,11 @@ createPlayer nodes decodedPlayer =
                                                                             |> List.filter
                                                                                 (\node2 ->
                                                                                     case node2 of
-                                                                                        Text _ -> True
+                                                                                        Text _ ->
+                                                                                            True
 
-                                                                                        _ -> False
+                                                                                        _ ->
+                                                                                            False
                                                                                 )
                                                                             |> List.head
                                                                             |> Maybe.map
@@ -349,7 +376,8 @@ createPlayer nodes decodedPlayer =
                                                                                 )
                                                                             |> Maybe.withDefault ""
 
-                                                                    _ -> ""
+                                                                    _ ->
+                                                                        ""
                                                             )
                                                         |> Maybe.withDefault ""
 
@@ -358,22 +386,16 @@ createPlayer nodes decodedPlayer =
                                                         |> List.tail
                                                         |> Maybe.withDefault []
                                                         |> List.filter
-                                                           (\node ->
-                                                               case node of
-                                                                   Element _ _ _ ->
-                                                                       True
+                                                            (\node ->
+                                                                case node of
+                                                                    Element _ _ _ ->
+                                                                        True
 
-                                                                   _ ->
-                                                                       False
-                                                           )
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
+                                                                    _ ->
+                                                                        False
+                                                            )
+                                                        |> List.drop 3
                                                         |> List.head
-
                                                         |> Maybe.map
                                                             (\node ->
                                                                 case node of
@@ -382,9 +404,11 @@ createPlayer nodes decodedPlayer =
                                                                             |> List.filter
                                                                                 (\node2 ->
                                                                                     case node2 of
-                                                                                        Text _ -> True
+                                                                                        Text _ ->
+                                                                                            True
 
-                                                                                        _ -> False
+                                                                                        _ ->
+                                                                                            False
                                                                                 )
                                                                             |> List.head
                                                                             |> Maybe.map
@@ -398,36 +422,26 @@ createPlayer nodes decodedPlayer =
                                                                                 )
                                                                             |> Maybe.withDefault ""
 
-                                                                    _ -> ""
+                                                                    _ ->
+                                                                        ""
                                                             )
                                                         |> Maybe.withDefault ""
-
 
                                                 status =
                                                     innerNodes
                                                         |> List.tail
                                                         |> Maybe.withDefault []
                                                         |> List.filter
-                                                           (\node ->
-                                                               case node of
-                                                                   Element _ _ _ ->
-                                                                       True
+                                                            (\node ->
+                                                                case node of
+                                                                    Element _ _ _ ->
+                                                                        True
 
-                                                                   _ ->
-                                                                       False
-                                                           )
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
+                                                                    _ ->
+                                                                        False
+                                                            )
+                                                        |> List.drop 5
                                                         |> List.head
-
                                                         |> Maybe.map
                                                             (\node ->
                                                                 case node of
@@ -436,9 +450,11 @@ createPlayer nodes decodedPlayer =
                                                                             |> List.filter
                                                                                 (\node2 ->
                                                                                     case node2 of
-                                                                                        Text _ -> True
+                                                                                        Text _ ->
+                                                                                            True
 
-                                                                                        _ -> False
+                                                                                        _ ->
+                                                                                            False
                                                                                 )
                                                                             |> List.head
                                                                             |> Maybe.map
@@ -452,7 +468,8 @@ createPlayer nodes decodedPlayer =
                                                                                 )
                                                                             |> Maybe.withDefault ""
 
-                                                                    _ -> ""
+                                                                    _ ->
+                                                                        ""
                                                             )
                                                         |> Maybe.withDefault ""
                                             in
@@ -582,6 +599,7 @@ config =
         , columns =
             [ teamColumn "Team" .team
             , Table.stringColumn "Name" .webName
+            , Table.stringColumn "Position" .position
             , Table.floatColumn "Selected by [%]" .selectedBy
             , Table.intColumn "Transfers in" .transfersIn
             , Table.intColumn "Transfers out" .transfersOut
