@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const fetch = require('node-fetch')
-
+const htmlParser = require('node-html-parser')
 const app = express()
 
 app.use(cors())
@@ -28,8 +28,14 @@ app.get('/api/injuries', async (req, res) => {
                     throw response;
             }
         })
-        .then(function (template) {
-            res.send(template);
+        .then(function (templateString) {
+            const html = htmlParser.parse(templateString);
+
+            const parsedHtmlTable = html.querySelector(".injury-table");
+
+            const parsedPlayers = parsedHtmlTable.querySelectorAll(".player-row");
+
+            res.send(parsedPlayers.toString());
         })
         .catch(function (response) {
             // "Not Found"
