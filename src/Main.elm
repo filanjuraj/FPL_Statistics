@@ -194,16 +194,8 @@ createPlayer nodes decodedPlayer =
                             let
                                 nameNode =
                                     List.head
-                                        (List.filter
-                                            (\node ->
-                                                case node of
-                                                    Element _ _ _ ->
-                                                        True
-
-                                                    _ ->
-                                                        False
-                                            )
-                                            innerNodes
+                                        (innerNodes
+                                            |> getElementNodes
                                         )
                             in
                             case nameNode of
@@ -213,16 +205,8 @@ createPlayer nodes decodedPlayer =
                                             let
                                                 name =
                                                     List.head
-                                                        (List.filter
-                                                            (\node ->
-                                                                case node of
-                                                                    Text _ ->
-                                                                        True
-
-                                                                    _ ->
-                                                                        False
-                                                            )
-                                                            innerNodes2
+                                                        (innerNodes2
+                                                            |> getTextNodes
                                                         )
                                             in
                                             case name of
@@ -249,16 +233,8 @@ createPlayer nodes decodedPlayer =
             let
                 nameNode =
                     List.head
-                        (List.filter
-                            (\node ->
-                                case node of
-                                    Element _ _ _ ->
-                                        True
-
-                                    _ ->
-                                        False
-                            )
-                            innerNodes
+                        (innerNodes
+                            |> getElementNodes
                         )
             in
             case nameNode of
@@ -268,16 +244,8 @@ createPlayer nodes decodedPlayer =
                             let
                                 name =
                                     List.head
-                                        (List.filter
-                                            (\node ->
-                                                case node of
-                                                    Text _ ->
-                                                        True
-
-                                                    _ ->
-                                                        False
-                                            )
-                                            innerNodes2
+                                        (innerNodes2
+                                            |> getTextNodes
                                         )
                             in
                             case name of
@@ -289,189 +257,16 @@ createPlayer nodes decodedPlayer =
                                         True ->
                                             let
                                                 reason =
-                                                    innerNodes
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
-                                                        |> List.filter
-                                                            (\node ->
-                                                                case node of
-                                                                    Element _ _ _ ->
-                                                                        True
-
-                                                                    _ ->
-                                                                        False
-                                                            )
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
-                                                        |> List.head
-                                                        |> Maybe.map
-                                                            (\node ->
-                                                                case node of
-                                                                    Element _ _ innerNodes3 ->
-                                                                        innerNodes3
-                                                                            |> List.filter
-                                                                                (\node2 ->
-                                                                                    case node2 of
-                                                                                        Text _ ->
-                                                                                            True
-
-                                                                                        _ ->
-                                                                                            False
-                                                                                )
-                                                                            |> List.head
-                                                                            |> Maybe.map
-                                                                                (\node3 ->
-                                                                                    case node3 of
-                                                                                        Text reasonText ->
-                                                                                            reasonText
-
-                                                                                        _ ->
-                                                                                            ""
-                                                                                )
-                                                                            |> Maybe.withDefault ""
-
-                                                                    _ ->
-                                                                        ""
-                                                            )
-                                                        |> Maybe.withDefault ""
+                                                    parseNameWithIndex innerNodes 1
 
                                                 detail =
-                                                    innerNodes
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
-                                                        |> List.filter
-                                                            (\node ->
-                                                                case node of
-                                                                    Element _ _ _ ->
-                                                                        True
-
-                                                                    _ ->
-                                                                        False
-                                                            )
-                                                        |> List.drop 2
-                                                        |> List.head
-                                                        |> Maybe.map
-                                                            (\node ->
-                                                                case node of
-                                                                    Element _ _ innerNodes3 ->
-                                                                        innerNodes3
-                                                                            |> List.filter
-                                                                                (\node2 ->
-                                                                                    case node2 of
-                                                                                        Text _ ->
-                                                                                            True
-
-                                                                                        _ ->
-                                                                                            False
-                                                                                )
-                                                                            |> List.head
-                                                                            |> Maybe.map
-                                                                                (\node3 ->
-                                                                                    case node3 of
-                                                                                        Text reasonText ->
-                                                                                            reasonText
-
-                                                                                        _ ->
-                                                                                            ""
-                                                                                )
-                                                                            |> Maybe.withDefault ""
-
-                                                                    _ ->
-                                                                        ""
-                                                            )
-                                                        |> Maybe.withDefault ""
+                                                    parseNameWithIndex innerNodes 2
 
                                                 return =
-                                                    innerNodes
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
-                                                        |> List.filter
-                                                            (\node ->
-                                                                case node of
-                                                                    Element _ _ _ ->
-                                                                        True
-
-                                                                    _ ->
-                                                                        False
-                                                            )
-                                                        |> List.drop 3
-                                                        |> List.head
-                                                        |> Maybe.map
-                                                            (\node ->
-                                                                case node of
-                                                                    Element _ _ innerNodes3 ->
-                                                                        innerNodes3
-                                                                            |> List.filter
-                                                                                (\node2 ->
-                                                                                    case node2 of
-                                                                                        Text _ ->
-                                                                                            True
-
-                                                                                        _ ->
-                                                                                            False
-                                                                                )
-                                                                            |> List.head
-                                                                            |> Maybe.map
-                                                                                (\node3 ->
-                                                                                    case node3 of
-                                                                                        Text reasonText ->
-                                                                                            reasonText
-
-                                                                                        _ ->
-                                                                                            ""
-                                                                                )
-                                                                            |> Maybe.withDefault ""
-
-                                                                    _ ->
-                                                                        ""
-                                                            )
-                                                        |> Maybe.withDefault ""
+                                                    parseNameWithIndex innerNodes 3
 
                                                 status =
-                                                    innerNodes
-                                                        |> List.tail
-                                                        |> Maybe.withDefault []
-                                                        |> List.filter
-                                                            (\node ->
-                                                                case node of
-                                                                    Element _ _ _ ->
-                                                                        True
-
-                                                                    _ ->
-                                                                        False
-                                                            )
-                                                        |> List.drop 5
-                                                        |> List.head
-                                                        |> Maybe.map
-                                                            (\node ->
-                                                                case node of
-                                                                    Element _ _ innerNodes3 ->
-                                                                        innerNodes3
-                                                                            |> List.filter
-                                                                                (\node2 ->
-                                                                                    case node2 of
-                                                                                        Text _ ->
-                                                                                            True
-
-                                                                                        _ ->
-                                                                                            False
-                                                                                )
-                                                                            |> List.head
-                                                                            |> Maybe.map
-                                                                                (\node3 ->
-                                                                                    case node3 of
-                                                                                        Text reasonText ->
-                                                                                            reasonText
-
-                                                                                        _ ->
-                                                                                            ""
-                                                                                )
-                                                                            |> Maybe.withDefault ""
-
-                                                                    _ ->
-                                                                        ""
-                                                            )
-                                                        |> Maybe.withDefault ""
+                                                    parseNameWithIndex innerNodes 5
                                             in
                                             playerConstructor reason detail return status
 
@@ -489,6 +284,69 @@ createPlayer nodes decodedPlayer =
 
         _ ->
             playerConstructor "" "" "" ""
+
+
+getElementNodes : List Node -> List Node
+getElementNodes =
+    List.filter
+        (\node ->
+            case node of
+                Element _ _ _ ->
+                    True
+
+                _ ->
+                    False
+        )
+
+
+getTextNodes : List Node -> List Node
+getTextNodes =
+    List.filter
+        (\node2 ->
+            case node2 of
+                Text _ ->
+                    True
+
+                _ ->
+                    False
+        )
+
+
+getNameFromNode : Maybe Node -> Maybe String
+getNameFromNode =
+    Maybe.map
+        (\node ->
+            case node of
+                Element _ _ innerNodes3 ->
+                    innerNodes3
+                        |> getTextNodes
+                        |> List.head
+                        |> Maybe.map
+                            (\node3 ->
+                                case node3 of
+                                    Text text ->
+                                        text
+
+                                    _ ->
+                                        ""
+                            )
+                        |> Maybe.withDefault ""
+
+                _ ->
+                    ""
+        )
+
+
+parseNameWithIndex : List Node -> Int -> String
+parseNameWithIndex list index =
+    list
+        |> List.tail
+        |> Maybe.withDefault []
+        |> getElementNodes
+        |> List.drop index
+        |> List.head
+        |> getNameFromNode
+        |> Maybe.withDefault ""
 
 
 
