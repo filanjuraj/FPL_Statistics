@@ -209,16 +209,16 @@ createPlayer nodes decodedPlayer =
                         True ->
                             let
                                 reason =
-                                    parseNameWithIndex innerNodes 1
+                                    parseTextWithIndex innerNodes 1
 
                                 detail =
-                                    parseNameWithIndex innerNodes 2
+                                    parseTextWithIndex innerNodes 2
 
                                 return =
-                                    parseNameWithIndex innerNodes 3
+                                    parseTextWithIndex innerNodes 3
 
                                 status =
-                                    parseNameWithIndex innerNodes 5
+                                    parseTextWithIndex innerNodes 5
                             in
                             playerConstructor reason detail return status
 
@@ -298,8 +298,8 @@ getTextNodes =
         )
 
 
-getNameFromNode : Maybe Node -> Maybe String
-getNameFromNode =
+getTextFromNode : Maybe Node -> Maybe String
+getTextFromNode =
     Maybe.map
         (\node ->
             case node of
@@ -323,15 +323,15 @@ getNameFromNode =
         )
 
 
-parseNameWithIndex : List Node -> Int -> String
-parseNameWithIndex list index =
+parseTextWithIndex : List Node -> Int -> String
+parseTextWithIndex list index =
     list
         |> List.tail
         |> Maybe.withDefault []
         |> getElementNodes
         |> List.drop index
         |> List.head
-        |> getNameFromNode
+        |> getTextFromNode
         |> Maybe.withDefault ""
 
 
