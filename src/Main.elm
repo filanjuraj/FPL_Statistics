@@ -189,47 +189,53 @@ createPlayer nodes decodedPlayer =
         foundNode =
             List.filter
                 (\node_ ->
-                    case node_ of
-                        Element _ _ innerNodes ->
-                            let
-                                nameNode =
-                                    List.head
-                                        (innerNodes
-                                            |> getElementNodes
-                                        )
-                            in
-                            case nameNode of
-                                Just (Element _ _ innerNodes2) ->
-                                    case List.length innerNodes2 == 2 of
-                                        True ->
-                                            let
-                                                name =
-                                                    List.head
-                                                        (innerNodes2
-                                                            |> getTextNodes
-                                                        )
-                                            in
-                                            case name of
-                                                Just (Text text) ->
-                                                    String.contains decodedPlayer.firstName text
-                                                        && String.contains decodedPlayer.secondName text
-
-                                                _ ->
-                                                    False
-
-                                        False ->
-                                            False
-
-                                _ ->
-                                    False
-
-                        _ ->
-                            False
+                    isSameName node_ decodedPlayer
                 )
                 nodes
     in
     case List.head foundNode of
         Just (Element _ _ innerNodes) ->
+            let
+                nameNode =
+                    List.head
+                        (innerNodes
+                            |> getElementNodes
+                        )
+            in
+            case nameNode of
+                Just (Element _ _ innerNodes2) ->
+                    -- the right element should always contain 2 nodes
+                    case List.length innerNodes2 == 2 of
+                        True ->
+                            let
+                                reason =
+                                    parseNameWithIndex innerNodes 1
+
+                                detail =
+                                    parseNameWithIndex innerNodes 2
+
+                                return =
+                                    parseNameWithIndex innerNodes 3
+
+                                status =
+                                    parseNameWithIndex innerNodes 5
+                            in
+                            playerConstructor reason detail return status
+
+                        False ->
+                            playerConstructor "" "" "" ""
+
+                _ ->
+                    playerConstructor "" "" "" ""
+
+        _ ->
+            playerConstructor "" "" "" ""
+
+
+isSameName : Node -> DecodedPlayer -> Bool
+isSameName node decodedPlayer =
+    case node of
+        Element _ _ innerNodes ->
             let
                 nameNode =
                     List.head
@@ -250,40 +256,20 @@ createPlayer nodes decodedPlayer =
                             in
                             case name of
                                 Just (Text text) ->
-                                    case
-                                        String.contains decodedPlayer.firstName text
-                                            && String.contains decodedPlayer.secondName text
-                                    of
-                                        True ->
-                                            let
-                                                reason =
-                                                    parseNameWithIndex innerNodes 1
-
-                                                detail =
-                                                    parseNameWithIndex innerNodes 2
-
-                                                return =
-                                                    parseNameWithIndex innerNodes 3
-
-                                                status =
-                                                    parseNameWithIndex innerNodes 5
-                                            in
-                                            playerConstructor reason detail return status
-
-                                        False ->
-                                            playerConstructor "" "" "" ""
+                                    String.contains decodedPlayer.firstName text
+                                        && String.contains decodedPlayer.secondName text
 
                                 _ ->
-                                    playerConstructor "" "" "" ""
+                                    False
 
                         False ->
-                            playerConstructor "" "" "" ""
+                            False
 
                 _ ->
-                    playerConstructor "" "" "" ""
+                    False
 
         _ ->
-            playerConstructor "" "" "" ""
+            False
 
 
 getElementNodes : List Node -> List Node
