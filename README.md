@@ -29,6 +29,9 @@ Or you can run the **production build** of the **web application** with node-sta
 
 Go to `\build` folder and type command: `static`
 
+To create production build of the web application type the command:
+`elm-app build`
+
 # Implementation
 
 ### Server
