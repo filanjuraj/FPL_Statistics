@@ -67,9 +67,12 @@ type alias Player =
 * [krisajenkins/remotedata](https://package.elm-lang.org/packages/krisajenkins/remotedata/latest/) - tools for fetching data from HTTP
 * [Create Elm App](https://github.com/halfzebra/create-elm-app) - creates Elm project
 
-### Testing
+# Testing
 
-
+Tests cover main functions of the web application which are:
+* decoding player from JSON
+* parsing injury from HTML
+* joining player and injury
 
 To run tests, type this command in the root of the project:
 
