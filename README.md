@@ -27,7 +27,7 @@ Run the **web application**:
 
 Or you can run the **production build** of the **web application** with node-static (`npm install -g node-static`):
 
-Go to `\build` folder and type command: `static`
+Go to `.\build` folder and type command: `static`
 
 To create production build of the web application type the command:
 `elm-app build`
