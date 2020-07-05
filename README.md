@@ -20,12 +20,14 @@ Since millions of players are playing this game in the whole world, there are al
 After downloading this project, go to root file of the project and type these commands.
 
 Start the server:
-
 `npm start`
 
 Run the application:
-
 `elm-app start`
+
+Or you can run the production build with node-static (`npm install -g node-static`):
+
+Go to `\build` folder and type command: `static`
 
 # Implementation
 
