@@ -28,8 +28,6 @@ type alias PlayersResponse =
     { decodedPlayers : List DecodedPlayer }
 
 
-{-| Representation of player with injury data which is used in table
--}
 type alias Player =
     { firstName : String
     , secondName : String
@@ -46,8 +44,6 @@ type alias Player =
     }
 
 
-{-| Player decoded from JSON
--}
 type alias DecodedPlayer =
     { firstName : String
     , secondName : String
@@ -60,8 +56,6 @@ type alias DecodedPlayer =
     }
 
 
-{-| Injury parsed from HTML
--}
 type alias Injury =
     { name : String
     , reason : String
@@ -120,8 +114,6 @@ decodePlayer =
         |> Pipeline.required "element_type" positionDecoder
 
 
-{-| Converts String from JSON to Float
--}
 stringFloatDecoder : Decode.Decoder Float
 stringFloatDecoder =
     Decode.string
@@ -136,8 +128,6 @@ stringFloatDecoder =
             )
 
 
-{-| Converts Int from JSON representing position of player to String
--}
 positionDecoder : Decode.Decoder String
 positionDecoder =
     Decode.int
@@ -178,8 +168,6 @@ joinPlayersInjuries decodedPlayers =
             )
 
 
-{-| This function iterates parsed HTML and joins injury (if found) with player
--}
 createPlayer : List Html.Parser.Node -> DecodedPlayer -> Player
 createPlayer nodes decodedPlayer =
     let
@@ -244,8 +232,6 @@ createPlayer nodes decodedPlayer =
             playerConstructor "" "" "" ""
 
 
-{-| Function which determines if injury corresponds to given player
--}
 isSameName : Node -> DecodedPlayer -> Bool
 isSameName node decodedPlayer =
     case node of

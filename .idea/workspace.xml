@@ -2,22 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4841321e-4e9f-42aa-8de2-18054280aa4d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="ElmWorkspace">
-    <elmProjects>
-      <project path="$PROJECT_DIR$/elm.json" />
-    </elmProjects>
-    <settings elmCompilerPath="C:\Program Files (x86)\Elm\0.19.1\bin\elm.exe" elmFormatPath="C:\Users\Juro\Documents\skola\MI-AFP\fpl\node_modules\.bin\elm-format.cmd" elmTestPath="" isElmFormatOnSaveEnabled="false" />
-  </component>
-  <component name="FavoritesManager">
-    <favorites_list name="fpl" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -30,38 +21,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="ToolWindowFavorites.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../hw10_filanjur" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="org.elm.workspace.ui.ElmWorkspaceConfigurable" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Juro\Documents\skola\MI-AFP\fpl\public" />
-      <recent name="C:\Users\Juro\Documents\skola\MI-AFP\fpl" />
-    </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="ELM_TEST_RUN_CONFIGURATION" factoryName="Elm Test configuration factory">
-      <ElmTestRunConfiguration elm-folder="C:\Users\Juro\AppData\Roaming\elm\0.19.1\packages\elm\json\1.1.2" />
-      <method v="2" />
-    </configuration>
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -79,22 +42,6 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="UnknownFeatures">
-    <option featureType="com.intellij.fileTypeFactory" implementationName="*.js" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
   <component name="WindowStateProjectService">
     <state x="142" y="0" key="SettingsEditor" timestamp="1593093951121">
