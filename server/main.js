@@ -8,7 +8,11 @@ app.use(cors())
 
 app.get('/api/players', async (req, res) => {
 
-     fetch('https://fantasy.premierleague.com/api/bootstrap-static/')
+     fetch('https://fantasy.premierleague.com/api/bootstrap-static/',{
+        headers: {
+            'User-Agent': 'ANYTHING_WILL_WORK_HERE'
+        }
+    })
                         .then(response => response.json())
                         .then(data => {
                             res.send(data);
