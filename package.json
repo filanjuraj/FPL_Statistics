@@ -14,7 +14,7 @@
     "cors": "^2.8.5",
     "elm-format": "^0.8.3",
     "express": "^4.16.4",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "node-html-parser": "^1.2.20",
     "nodemon": "^1.19.0"
   }
